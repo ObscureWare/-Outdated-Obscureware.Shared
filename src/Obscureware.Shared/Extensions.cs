@@ -46,7 +46,9 @@ namespace Obscureware.Shared
         /// Info-units suffixes
         /// </summary>
         private static readonly string[] Sufixes = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-        
+
+        private static readonly char[] SPLIT_MATCHES = new []{' ', ',', '\'', '"', '.', ';', '!', '?', ':'};
+
         /// <summary>
         /// Converts natural number (indexing, staring from 1) into Excel-like column numbering format (i.e. A, B, ... Z, AB, AC, ... ZY, ZZ)
         /// </summary>
@@ -140,10 +142,30 @@ namespace Obscureware.Shared
             int offset = 0;
             while (offset < text.Length)
             {
-                int index = text.LastIndexOf(" ", Math.Min(text.Length, offset + (int)columnWidth), StringComparison.Ordinal); // TODO: use CultureInfo!
-                string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset);
-                offset += line.Length + 1;
-                yield return line;
+                // TODO: this is too naive, it does not split inside words ;-(
+                // TODO: have to find or design somything myself
+                if (offset + (int) columnWidth < text.Length)
+                {
+                    int index = text.LastIndexOfAny(SPLIT_MATCHES, Math.Min(text.Length, offset + (int) columnWidth));
+                    if (index < 0 || text[index] == ' ')
+                    {
+                        string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset);
+                        offset += line.Length + 1;
+                        yield return line;
+                    }
+                    else
+                    {
+                        string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset + 1);
+                            // keep punktuation character
+                        offset += line.Length;
+                        yield return line;
+                    }
+                }
+                else
+                {
+                    yield return text.Substring(offset);
+                    yield break;
+                }
             }
         }
     }
