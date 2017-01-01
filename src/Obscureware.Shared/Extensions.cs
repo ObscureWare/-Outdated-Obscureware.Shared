@@ -145,7 +145,7 @@ namespace Obscureware.Shared
                 if (offset + (int) columnWidth < text.Length)
                 {
                     int index = text.LastIndexOfAny(SPLIT_MATCHES, Math.Min(text.Length, offset + (int) columnWidth));
-                    if (index > 0)
+                    if (index > 0 && index > offset)
                     {
                         if (index < 0 || text[index] == ' ')
                         {
@@ -155,9 +155,9 @@ namespace Obscureware.Shared
                         }
                         else
                         {
-                            string line = text.Substring(offset,
-                                (index - offset <= 0 ? text.Length : index) - offset + 1); // keep punctuation character
-                            offset += line.Length + 2;
+                            // keep punctuation character in upper line
+                            string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset + 1); 
+                            offset += line.Length + 1;
                             yield return line;
                         }
                     }
