@@ -47,7 +47,7 @@ namespace Obscureware.Shared
         /// </summary>
         private static readonly string[] Sufixes = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-        private static readonly char[] SPLIT_MATCHES = new []{' ', ',', '\'', '"', '.', ';', '!', '?', ':'};
+        private static readonly char[] SPLIT_MATCHES = new []{' ', ',', '\'', '"', '.', ';', '!', '?', ':', '-', '=', '_' };
 
         /// <summary>
         /// Converts natural number (indexing, staring from 1) into Excel-like column numbering format (i.e. A, B, ... Z, AB, AC, ... ZY, ZZ)
@@ -142,21 +142,30 @@ namespace Obscureware.Shared
             int offset = 0;
             while (offset < text.Length)
             {
-                // TODO: this is too naive, it does not split inside words ;-(
-                // TODO: have to find or design somything myself
                 if (offset + (int) columnWidth < text.Length)
                 {
                     int index = text.LastIndexOfAny(SPLIT_MATCHES, Math.Min(text.Length, offset + (int) columnWidth));
-                    if (index < 0 || text[index] == ' ')
+                    if (index > 0)
                     {
-                        string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset);
-                        offset += line.Length + 1;
-                        yield return line;
+                        if (index < 0 || text[index] == ' ')
+                        {
+                            string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset);
+                            offset += line.Length + 1;
+                            yield return line;
+                        }
+                        else
+                        {
+                            string line = text.Substring(offset,
+                                (index - offset <= 0 ? text.Length : index) - offset + 1); // keep punctuation character
+                            offset += line.Length + 2;
+                            yield return line;
+                        }
                     }
                     else
                     {
-                        string line = text.Substring(offset, (index - offset <= 0 ? text.Length : index) - offset + 1);
-                            // keep punktuation character
+                        // brute-force split in the middle of long, unbreakable text, 
+                        // TODO: smart-split, but that would require to know something about column content type (add hyphen in text, just break inside identifiers or numbers...
+                        string line = text.Substring(offset, (int) columnWidth);
                         offset += line.Length;
                         yield return line;
                     }
