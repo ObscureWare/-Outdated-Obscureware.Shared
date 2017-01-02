@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obscureware.Shared", "Obscureware.Shared\Obscureware.Shared.csproj", "{286F5FE3-B75F-41B0-98BF-095F4617513A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obscureware.Shared.Tests", "Obscureware.Shared.Tests\Obscureware.Shared.Tests.csproj", "{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{286F5FE3-B75F-41B0-98BF-095F4617513A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{286F5FE3-B75F-41B0-98BF-095F4617513A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{286F5FE3-B75F-41B0-98BF-095F4617513A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{286F5FE3-B75F-41B0-98BF-095F4617513A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -134,6 +134,12 @@ namespace Obscureware.Shared
             {
                 throw new ArgumentNullException(nameof(text));
             }
+            if (text == string.Empty)
+            {
+                yield return string.Empty;
+                yield break;
+            }
+
             if (columnWidth < MIN_FIT_AREA)
             {
                 throw new ArgumentException($"This is just nonsense - area to fit text into must be at least {MIN_FIT_AREA} characters wide.", nameof(columnWidth));
