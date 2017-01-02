@@ -47,7 +47,7 @@ namespace Obscureware.Shared
         /// </summary>
         private static readonly string[] Sufixes = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
-        private static readonly char[] SPLIT_MATCHES = new []{' ', ',', '\'', '"', '.', ';', '!', '?', ':', '-', '=', '_' };
+        private static readonly char[] SplitMatches = new []{' ', ',', '\'', '"', '.', ';', '!', '?', ':', '-', '=', '_' };
 
         /// <summary>
         /// Converts natural number (indexing, staring from 1) into Excel-like column numbering format (i.e. A, B, ... Z, AB, AC, ... ZY, ZZ)
@@ -55,10 +55,10 @@ namespace Obscureware.Shared
         /// <param name="value">Number to be converted.</param>
         /// <returns>Excel-like column number</returns>
         /// <remarks>Taken from http://stackoverflow.com/questions/837155/fastest-function-to-generate-excel-column-letters-in-c-sharp </remarks>
-        public static string ToAlphaEnum(this uint @value)
+        public static string ToAlphaEnum(this uint value)
         {
             string columnString = string.Empty;
-            decimal columnNumber = @value;
+            decimal columnNumber = value;
             while (columnNumber > 0)
             {
                 decimal currentLetterNumber = (columnNumber - 1) % 26;
@@ -76,17 +76,17 @@ namespace Obscureware.Shared
         /// <param name="value">String to be "parsed" (converted)</param>
         /// <returns></returns>
         /// <remarks>Taken from http://stackoverflow.com/questions/837155/fastest-function-to-generate-excel-column-letters-in-c-sharp </remarks>
-        public static int FromAlphaEnum(this string @value)
+        public static uint FromAlphaEnum(this string value)
         {
             int retVal = 0;
-            string col = @value.ToUpper();
+            string col = value.ToUpper();
             for (int charIndex = col.Length - 1; charIndex >= 0; charIndex--)
             {
                 char colPiece = col[charIndex];
                 int colNum = colPiece - 64;
                 retVal = retVal + (colNum * (int)Math.Pow(26, col.Length - (charIndex + 1)));
             }
-            return retVal;
+            return (uint)retVal;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Obscureware.Shared
             {
                 if (offset + (int) columnWidth < text.Length)
                 {
-                    int index = text.LastIndexOfAny(SPLIT_MATCHES, Math.Min(text.Length, offset + (int) columnWidth));
+                    int index = text.LastIndexOfAny(SplitMatches, Math.Min(text.Length, offset + (int) columnWidth));
                     if (index > 0 && index >= offset)
                     {
                         if (index < 0 || text[index] == ' ')

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TextColumnInfo.cs" company="Obscureware Solutions">
+// <copyright file="___.cs" company="Obscureware Solutions">
 // MIT License
 //
 // Copyright(c) 2016-2017 Sebastian Gruchacz
@@ -23,17 +23,11 @@
 // SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines the TextColumnInfo class.
+//   Defines the ... class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Obscureware.Shared.Helpers
+namespace Obscureware.Shared
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     public class Class1
     {
     }

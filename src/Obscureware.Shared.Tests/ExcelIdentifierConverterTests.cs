@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SplitTextToFitTests.cs" company="Obscureware Solutions">
+// <copyright file="ExcelIdentifierConverterTests.cs" company="Obscureware Solutions">
 // MIT License
 //
 // Copyright(c) 2017 Sebastian Gruchacz
@@ -23,59 +23,50 @@
 // SOFTWARE.
 // </copyright>
 // <summary>
-//   Defines SplitTextToFit function tests.
+//   Defines ToAlphaEnum & FromAlphaEnum functions tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Obscureware.Shared.Tests
 {
-    using System;
-    using System.Linq;
-    using Shared;
-
     using Shouldly;
-
     using Xunit;
 
-    public class SplitTextToFitTests
+    public class ExcelIdentifierConverterTests
     {
-        [Fact]
-        public void SplitOfEmptyStringShallYieldEmptyString()
+        [Theory]
+        [InlineData(1u, "A")]
+        [InlineData(2u, "B")]
+        [InlineData(26u, "Z")]
+        public void BasicNumberToTextConversionShallWork(uint num, string expected)
         {
-            string.Empty.SplitTextToFit(5).ShouldNotBeEmpty();
-            string.Empty.SplitTextToFit(5).ShouldBe(new string[] {String.Empty});
-        }
-
-        [Fact]
-        public void NullStringShallThrowArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-                Extensions.SplitTextToFit(null, 5).ToArray()
-            );
-        }
-
-        [Fact]
-        public void WhenAreaIsTooSmallItShallThrowArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() =>
-                "abc".SplitTextToFit(2).ToArray()
-            );
+            num.ToAlphaEnum().ShouldBe(expected);
         }
 
         [Theory]
-        [InlineData("abc", new string[] { "abc" })]
-        [InlineData("abc.abcdef.11 .. 123", new string[] { "abc.abcdef.11 .. 123" })]
-        public void WhenShortEnoughTextIsPassedItShallJustFit(string input, string[] expectedOutput)
+        [InlineData(27u, "AA")]
+        [InlineData(28u, "AB")]
+        [InlineData(702u, "ZZ")]
+        public void AdnvancedNumberToTextConversionShallWork(uint num, string expected)
         {
-            input.SplitTextToFit(20).ToArray().ShouldBe(expectedOutput);
+            num.ToAlphaEnum().ShouldBe(expected);
         }
 
         [Theory]
-        [InlineData("abc.abcd", new string[] { "abc.", "abcd" })]
-        [InlineData("abc.abcdef.11 .. 123", new string[] { "abc.","abcde", "f.11 ", "..", "123" })]
-        // TODO: perhaps more test cases
-        public void WhenLongEnoughTextIsPassedItShallBeProperlySplitted(string input, string[] expectedOutput)
+        [InlineData("A", 1u)]
+        [InlineData("B", 2u)]
+        [InlineData("Z", 26u)]
+        public void BasicTextToNumberConversionShallWork(string identifier, uint expected)
         {
-            input.SplitTextToFit(5).ToArray().ShouldBe(expectedOutput);
+            identifier.FromAlphaEnum().ShouldBe(expected);
+        }
+
+        [Theory]
+        [InlineData("AA", 27u)]
+        [InlineData("AB", 28u)]
+        [InlineData("ZZ", 702u)]
+        public void AdnvancedTextToNumberConversionShallWork(string identifier, uint expected)
+        {
+            identifier.FromAlphaEnum().ShouldBe(expected);
         }
     }
 }
