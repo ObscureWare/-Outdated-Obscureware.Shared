@@ -26,7 +26,7 @@
 //   Defines BadImplementationException class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Obscureware.Shared
+namespace ObscureWare.Shared
 {
     using System;
 

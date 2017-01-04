@@ -8,8 +8,8 @@
     <ProjectGuid>{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Obscureware.Shared.Tests</RootNamespace>
-    <AssemblyName>Obscureware.Shared.Tests</AssemblyName>
+    <RootNamespace>ObscureWare.Shared.Tests</RootNamespace>
+    <AssemblyName>ObscureWare.Shared.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -70,9 +70,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Obscureware.Shared\Obscureware.Shared.csproj">
+    <ProjectReference Include="..\Obscureware.Shared\ObscureWare.Shared.csproj">
       <Project>{286F5FE3-B75F-41B0-98BF-095F4617513A}</Project>
-      <Name>Obscureware.Shared</Name>
+      <Name>ObscureWare.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

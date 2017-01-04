@@ -7,8 +7,8 @@
     <ProjectGuid>{286F5FE3-B75F-41B0-98BF-095F4617513A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Obscureware.Shared</RootNamespace>
-    <AssemblyName>Obscureware.Shared</AssemblyName>
+    <RootNamespace>ObscureWare.Shared</RootNamespace>
+    <AssemblyName>ObscureWare.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

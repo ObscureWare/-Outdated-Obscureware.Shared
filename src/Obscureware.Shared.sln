@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obscureware.Shared", "Obscureware.Shared\Obscureware.Shared.csproj", "{286F5FE3-B75F-41B0-98BF-095F4617513A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObscureWare.Shared", "Obscureware.Shared\ObscureWare.Shared.csproj", "{286F5FE3-B75F-41B0-98BF-095F4617513A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obscureware.Shared.Tests", "Obscureware.Shared.Tests\Obscureware.Shared.Tests.csproj", "{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObscureWare.Shared.Tests", "Obscureware.Shared.Tests\ObscureWare.Shared.Tests.csproj", "{2A8A7F0B-8669-4BCA-B2C5-D1AED680B134}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

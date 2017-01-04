@@ -26,7 +26,7 @@
 //   Defines some Extension methods.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Obscureware.Shared
+namespace ObscureWare.Shared
 {
     using System;
     using System.Collections.Generic;

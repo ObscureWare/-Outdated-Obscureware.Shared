@@ -26,7 +26,7 @@
 //   Defines SplitTextToFit function tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Obscureware.Shared.Tests
+namespace ObscureWare.Shared.Tests
 {
     using System;
 
