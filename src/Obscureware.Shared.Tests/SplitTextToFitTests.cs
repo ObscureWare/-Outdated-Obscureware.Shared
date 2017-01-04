@@ -29,7 +29,7 @@
 namespace ObscureWare.Shared.Tests
 {
     using System;
-
+    using System.Linq;
     using Shared;
 
     using Shouldly;
@@ -42,19 +42,40 @@ namespace ObscureWare.Shared.Tests
         public void SplitOfEmptyStringShallYieldEmptyString()
         {
             string.Empty.SplitTextToFit(5).ShouldNotBeEmpty();
-            string.Empty.SplitTextToFit(5).ShouldBe(new string[] { String.Empty });
+            string.Empty.SplitTextToFit(5).ShouldBe(new string[] {String.Empty});
         }
 
         [Fact]
         public void NullStringShallThrowArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => Extensions.SplitTextToFit(null, 5));
+            Assert.Throws<ArgumentNullException>(() =>
+                Extensions.SplitTextToFit(null, 5).ToArray()
+            );
         }
 
         [Fact]
         public void WhenAreaIsTooSmallItShallThrowArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => Extensions.SplitTextToFit("abc", 2));
+            Assert.Throws<ArgumentException>(() =>
+                "abc".SplitTextToFit(2).ToArray()
+            );
+        }
+
+        [Theory]
+        [InlineData("abc", new string[] { "abc" })]
+        [InlineData("abc.abcdef.11 .. 123", new string[] { "abc.abcdef.11 .. 123" })]
+        public void WhenShortEnoughTextIsPassedItShallJustFit(string input, string[] expectedOutput)
+        {
+            input.SplitTextToFit(20).ToArray().ShouldBe(expectedOutput);
+        }
+
+        [Theory]
+        [InlineData("abc.abcd", new string[] { "abc.", "abcd" })]
+        [InlineData("abc.abcdef.11 .. 123", new string[] { "abc.","abcde", "f.11 ", "..", "123" })]
+        // TODO: perhaps more test cases
+        public void WhenLongEnoughTextIsPassedItShallBeProperlySplitted(string input, string[] expectedOutput)
+        {
+            input.SplitTextToFit(5).ToArray().ShouldBe(expectedOutput);
         }
     }
 }
