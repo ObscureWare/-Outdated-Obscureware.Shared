@@ -28,6 +28,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Obscureware.Shared.Tests
 {
+    using ObscureWare.Shared;
+
     using Shouldly;
     using Xunit;
 
