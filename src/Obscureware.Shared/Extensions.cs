@@ -188,5 +188,15 @@ namespace ObscureWare.Shared
                 }
             }
         }
+
+        /// <summary>
+        /// Returns true, if this is system character (ASCII &lt; 32)
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <returns></returns>
+        public static bool IsSystemChar(this char ch)
+        {
+            return (int) ch < 32;
+        }
     }
 }
