@@ -34,14 +34,38 @@ namespace Obscureware.Shared
     {
         private static readonly Random rnd = new Random();
 
-        public static float GetRandomFloat()
+        public static float GetRandomFloat(FloatMode floatMode = FloatMode.Default)
         {
-            return (float)rnd.NextDouble(); // TODO: add float type (Real, NegativeReal, PositiveReal) and range selection
+            switch (floatMode)
+            {
+                case FloatMode.Default:
+                    return (float)rnd.NextDouble();
+                case FloatMode.PositiveReal:
+                    return (float)rnd.NextDouble() * float.MaxValue;
+                case FloatMode.NegativeReal:
+                    return (float)rnd.NextDouble() * float.MinValue;
+                case FloatMode.Real:
+                    return (float.MaxValue / 2) - (float) rnd.NextDouble() * float.MaxValue;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(floatMode), floatMode, null);
+            }
         }
 
-        public static float GetRandomFloat(int multiplier)
+        public static float GetRandomFloat(float multiplier, FloatMode floatMode = FloatMode.Default)
         {
-            return GetRandomFloat() * multiplier;
+            switch (floatMode)
+            {
+                case FloatMode.Default:
+                    return (float)rnd.NextDouble() * multiplier;
+                case FloatMode.PositiveReal:
+                    return (float)rnd.NextDouble() * Math.Abs(multiplier);
+                case FloatMode.NegativeReal:
+                    return (float)rnd.NextDouble() * (-1) * Math.Abs(multiplier);
+                case FloatMode.Real:
+                    return (Math.Abs(multiplier) / 2) - (float) rnd.NextDouble() * Math.Abs(multiplier);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(floatMode), floatMode, null);
+            }
         }
 
         /// <summary>
@@ -89,5 +113,28 @@ namespace Obscureware.Shared
         public static string AlphanumericIdentifier => UpperAlphanumeric + LowerAlphanumeric + @"_____"; // increased probability ;-)
 
         public static string AlphaSentence => LowerAlpha + @" .:! ,? ;"; // increased probability ;-)
+    }
+
+    public enum FloatMode
+    {
+        /// <summary>
+        /// 0 - 1
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// O - +Inf
+        /// </summary>
+        PositiveReal,
+
+        /// <summary>
+        /// -Inf - 0
+        /// </summary>
+        NegativeReal,
+
+        /// <summary>
+        /// -Inf / 2 - + Inf / 2
+        /// </summary>
+        Real
     }
 }

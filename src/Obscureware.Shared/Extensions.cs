@@ -123,7 +123,7 @@ namespace ObscureWare.Shared
         /// <param name="text">Text to split</param>
         /// <param name="columnWidth">Area width to fit the string</param>
         /// <returns>Text splinted into matching pieces.</returns>
-        /// <remarks>Used this imperfect solution for now: http://stackoverflow.com/a/1678162
+        /// <remarks>Based on this imperfect solution for now: http://stackoverflow.com/a/1678162
         /// This will not work properly for long words.
         /// This is not able to properly break the words in the middle to optimize space...
         /// TODO: use Humanizer library perhaps?
