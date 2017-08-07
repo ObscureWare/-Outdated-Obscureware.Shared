@@ -2,7 +2,7 @@
 // <copyright file="Extensions.cs" company="Obscureware Solutions">
 // MIT License
 //
-// Copyright(c) 2016 Sebastian Gruchacz
+// Copyright(c) 2016-2017 Sebastian Gruchacz
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,7 @@ namespace ObscureWare.Shared
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using Conditions;
 
     /// <summary>
     /// Some extension methods.
@@ -57,6 +58,8 @@ namespace ObscureWare.Shared
         /// <remarks>Taken from http://stackoverflow.com/questions/837155/fastest-function-to-generate-excel-column-letters-in-c-sharp </remarks>
         public static string ToAlphaEnum(this uint value)
         {
+            value.Requires(nameof(value)).IsGreaterThan(0u);
+
             string columnString = string.Empty;
             decimal columnNumber = value;
             while (columnNumber > 0)
@@ -78,6 +81,8 @@ namespace ObscureWare.Shared
         /// <remarks>Taken from http://stackoverflow.com/questions/837155/fastest-function-to-generate-excel-column-letters-in-c-sharp </remarks>
         public static uint FromAlphaEnum(this string value)
         {
+            Condition.Requires(value, nameof(value)).IsNotNullOrEmpty();
+
             int retVal = 0;
             string col = value.ToUpper();
             for (int charIndex = col.Length - 1; charIndex >= 0; charIndex--)
@@ -103,7 +108,7 @@ namespace ObscureWare.Shared
                 return $"{0} {Sufixes[0]}";
             }
 
-            long bytes = Math.Abs(byteCount);
+            long bytes = Math.Abs(byteCount); // just ignore negative lengths - this is not metaphysics
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
 
             if (place >= Sufixes.Length)
@@ -122,27 +127,21 @@ namespace ObscureWare.Shared
         /// </summary>
         /// <param name="text">Text to split</param>
         /// <param name="columnWidth">Area width to fit the string</param>
+        /// <param name="smartSplitSettings">(Not implemented yet)</param>
         /// <returns>Text splinted into matching pieces.</returns>
         /// <remarks>Based on this imperfect solution for now: http://stackoverflow.com/a/1678162
-        /// This will not work properly for long words.
-        /// This is not able to properly break the words in the middle to optimize space...
-        /// TODO: use Humanizer library perhaps?
+        /// This will not work properly for long "words" (and nicely for very narrow columns - do not expect miracles).
+        /// This is not able to properly break the "words" in the middle to optimize space...
         /// </remarks>
-        public static IEnumerable<string> SplitTextToFit(this string text, uint columnWidth)
+        public static IEnumerable<string> SplitTextToFit(this string text, uint columnWidth, SmartSplitSettings smartSplitSettings = null)
         {
-            if (text == null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
+            Condition.Requires(text, nameof(text)).IsNotNull();
+            columnWidth.Requires(nameof(columnWidth)).IsGreaterOrEqual(MIN_FIT_AREA, $"This is just plain nonsense - area to fit text into must be at least {MIN_FIT_AREA} characters wide.");
+            
             if (text == string.Empty)
             {
                 yield return string.Empty;
                 yield break;
-            }
-
-            if (columnWidth < MIN_FIT_AREA)
-            {
-                throw new ArgumentException($"This is just nonsense - area to fit text into must be at least {MIN_FIT_AREA} characters wide.", nameof(columnWidth));
             }
 
             int offset = 0;
@@ -150,6 +149,7 @@ namespace ObscureWare.Shared
             {
                 if (offset + (int) columnWidth < text.Length)
                 {
+                    // TODO: do better splitting and cleaning of white spaces / keeping punctuation....
                     int index = text.LastIndexOfAny(SplitMatches, Math.Min(text.Length, offset + (int) columnWidth));
                     if (index > 0 && index >= offset)
                     {
@@ -174,11 +174,15 @@ namespace ObscureWare.Shared
                     }
                     else
                     {
-                        // brute-force split in the middle of long, unbreakable text, 
-                        // TODO: smart-split, but that would require to know something about column content type (add hyphen in text, just break inside identifiers or numbers...
-                        string line = text.Substring(offset, (int) columnWidth);
-                        offset += line.Length;
-                        yield return line;
+                        // split in the middle of long, unbreakable text
+                        if (smartSplitSettings != null)
+                        {
+                            yield return SmartSplit(text, columnWidth, ref offset, smartSplitSettings);
+                        }
+                        else
+                        {
+                            yield return BruteSplit(text, columnWidth, ref offset);
+                        }
                     }
                 }
                 else
@@ -187,6 +191,20 @@ namespace ObscureWare.Shared
                     yield break;
                 }
             }
+        }
+
+        private static string SmartSplit(string text, uint columnWidth, ref int offset, SmartSplitSettings smartSplitSettings)
+        {
+            // TODO: smart-split, but that would require to know something about column content type (add hyphen in text, just break inside identifiers or numbers...
+            // TODO: use Humanizer library perhaps?
+            throw new NotImplementedException();
+        }
+
+        private static string BruteSplit(string text, uint columnWidth, ref int offset)
+        {
+            string line = text.Substring(offset, (int) columnWidth);
+            offset += line.Length;
+            return line;
         }
 
         /// <summary>
@@ -198,5 +216,9 @@ namespace ObscureWare.Shared
         {
             return (int) ch < 32;
         }
+    }
+
+    public class SmartSplitSettings
+    {
     }
 }

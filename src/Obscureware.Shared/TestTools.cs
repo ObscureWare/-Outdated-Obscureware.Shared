@@ -29,23 +29,24 @@
 namespace Obscureware.Shared
 {
     using System;
+    using Conditions;
 
     public static class TestTools
     {
-        private static readonly Random rnd = new Random();
+        private static readonly Random Rnd = new Random();
 
         public static float GetRandomFloat(FloatMode floatMode = FloatMode.Default)
         {
             switch (floatMode)
             {
                 case FloatMode.Default:
-                    return (float)rnd.NextDouble();
+                    return (float)Rnd.NextDouble();
                 case FloatMode.PositiveReal:
-                    return (float)rnd.NextDouble() * float.MaxValue;
+                    return (float)Rnd.NextDouble() * float.MaxValue;
                 case FloatMode.NegativeReal:
-                    return (float)rnd.NextDouble() * float.MinValue;
+                    return (float)Rnd.NextDouble() * float.MinValue;
                 case FloatMode.Real:
-                    return (float.MaxValue / 2) - (float) rnd.NextDouble() * float.MaxValue;
+                    return (float.MaxValue / 2) - (float) Rnd.NextDouble() * float.MaxValue;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floatMode), floatMode, null);
             }
@@ -56,13 +57,13 @@ namespace Obscureware.Shared
             switch (floatMode)
             {
                 case FloatMode.Default:
-                    return (float)rnd.NextDouble() * multiplier;
+                    return (float)Rnd.NextDouble() * multiplier;
                 case FloatMode.PositiveReal:
-                    return (float)rnd.NextDouble() * Math.Abs(multiplier);
+                    return (float)Rnd.NextDouble() * Math.Abs(multiplier);
                 case FloatMode.NegativeReal:
-                    return (float)rnd.NextDouble() * (-1) * Math.Abs(multiplier);
+                    return (float)Rnd.NextDouble() * (-1) * Math.Abs(multiplier);
                 case FloatMode.Real:
-                    return (Math.Abs(multiplier) / 2) - (float) rnd.NextDouble() * Math.Abs(multiplier);
+                    return (Math.Abs(multiplier) / 2) - (float) Rnd.NextDouble() * Math.Abs(multiplier);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floatMode), floatMode, null);
             }
@@ -76,10 +77,12 @@ namespace Obscureware.Shared
         /// <returns></returns>
         public static string BuildRandomStringFrom(this string sourceString, uint length)
         {
+            Condition.Requires(sourceString, nameof(sourceString)).IsNotNullOrEmpty();
+
             char[] array = new char[length];
             for (int i = 0; i < length; i++)
             {
-                array[i] = sourceString[rnd.Next(0, sourceString.Length)];
+                array[i] = sourceString[Rnd.Next(0, sourceString.Length)];
             }
 
             return new string(array);
@@ -87,12 +90,15 @@ namespace Obscureware.Shared
 
         public static string BuildRandomStringFrom(this string sourceString, int minLength, int maxLength)
         {
-            int length = rnd.Next(minLength, maxLength + 1);
+            Condition.Requires(sourceString, nameof(sourceString)).IsNotNullOrEmpty();
+            maxLength.Requires(nameof(maxLength)).IsGreaterThan(minLength);
+
+            int length = Rnd.Next(minLength, maxLength + 1);
 
             char[] array = new char[length];
             for (int i = 0; i < length; i++)
             {
-                array[i] = sourceString[rnd.Next(0, sourceString.Length)];
+                array[i] = sourceString[Rnd.Next(0, sourceString.Length)];
             }
 
             return new string(array);
@@ -112,7 +118,7 @@ namespace Obscureware.Shared
 
         public static string AlphanumericIdentifier => UpperAlphanumeric + LowerAlphanumeric + @"_____"; // increased probability ;-)
 
-        public static string AlphaSentence => LowerAlpha + @" .:! ,? ;"; // increased probability ;-)
+        public static string AlphaSentence => LowerAlpha + @" .:! ,? ;"; // increased probability of space ;-)
     }
 
     public enum FloatMode
